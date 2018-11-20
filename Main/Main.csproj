@@ -13,6 +13,7 @@
     <ProjectReference Include="..\Functions\Functions.csproj" />
     <ProjectReference Include="..\Redis.Cache\Redis.Cache.csproj" />
     <ProjectReference Include="..\ServiceBus\ServiceBus.csproj" />
+    <ProjectReference Include="..\StorageAccount\StorageAccount.csproj" />
   </ItemGroup>
 
 </Project>

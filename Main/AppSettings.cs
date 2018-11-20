@@ -18,6 +18,12 @@ namespace Main
         #region Redis Cache Settings
 
         public const string CacheConnectionString = "127.0.0.1:6379";
+
+        #endregion
+
+        #region Storage Account Settings
+
+        public const string StorageAccountConnectionString = "UseDevelopmentStorage=true";
         
         #endregion
     }

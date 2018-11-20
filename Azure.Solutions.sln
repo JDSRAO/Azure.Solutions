@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBus", "ServiceBus\ServiceBus.csproj", "{14AA757B-8CCC-4C94-BD0D-BA033CCAAB08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceBus", "ServiceBus\ServiceBus.csproj", "{14AA757B-8CCC-4C94-BD0D-BA033CCAAB08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Functions", "Functions\Functions.csproj", "{D4D434DE-3A76-4252-A661-01DF3827EF4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Functions", "Functions\Functions.csproj", "{D4D434DE-3A76-4252-A661-01DF3827EF4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Redis.Cache", "Redis.Cache\Redis.Cache.csproj", "{3A8196A5-8BC3-4F51-9244-8EF93F4B73ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Redis.Cache", "Redis.Cache\Redis.Cache.csproj", "{3A8196A5-8BC3-4F51-9244-8EF93F4B73ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main\Main.csproj", "{C607709E-1474-4C56-BCF0-D0B2F045322D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Main", "Main\Main.csproj", "{C607709E-1474-4C56-BCF0-D0B2F045322D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageAccount", "StorageAccount\StorageAccount.csproj", "{29A6A02B-0C2C-4C61-B84B-835367170C87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C607709E-1474-4C56-BCF0-D0B2F045322D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C607709E-1474-4C56-BCF0-D0B2F045322D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C607709E-1474-4C56-BCF0-D0B2F045322D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29A6A02B-0C2C-4C61-B84B-835367170C87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29A6A02B-0C2C-4C61-B84B-835367170C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29A6A02B-0C2C-4C61-B84B-835367170C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29A6A02B-0C2C-4C61-B84B-835367170C87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

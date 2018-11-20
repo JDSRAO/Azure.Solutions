@@ -1,5 +1,6 @@
 ﻿using Main.RedisCache;
 using Main.ServiceBus;
+using Main.StorageAccount.BlobProgram;
 using System;
 using System.Text;
 
@@ -14,6 +15,7 @@ namespace Main
             builder.AppendLine("1. Service Bus Application");
             builder.AppendLine("2. Redis Cache");
             builder.AppendLine("3. Function app");
+            builder.AppendLine("4. Blob Storage Account");
             builder.AppendLine("Enter your choice: ");
             //builder.AppendLine("3. ");
             bool run = true;
@@ -32,6 +34,12 @@ namespace Main
                         break;
                     case 2:
                         program = new RedisProgram();
+                        break;
+                    case 3:
+                        program = new BlobProgram();
+                        break;
+                    case 4:
+                        program = new BlobProgram();
                         break;
                     default:
                         program = null;
