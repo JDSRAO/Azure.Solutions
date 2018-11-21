@@ -10,7 +10,7 @@ namespace Main.StorageAccount.TableProgram
     public class TableProgram : IProgram
     {
         private Table table;
-        private const string tableName = "customerData";
+        private const string tableName = AppSettings.StorageAccountTableName;
 
         public TableProgram()
         {

@@ -1,6 +1,7 @@
 ﻿using Main.RedisCache;
 using Main.ServiceBus;
 using Main.StorageAccount.BlobProgram;
+using Main.StorageAccount.QueueProgram;
 using Main.StorageAccount.TableProgram;
 using System;
 using System.Text;
@@ -18,6 +19,7 @@ namespace Main
             builder.AppendLine("3. Function app");
             builder.AppendLine("4. Blob Storage Account");
             builder.AppendLine("5. Table Storage Account");
+            builder.AppendLine("6. Queue Storage Account");
             builder.AppendLine("Enter your choice: ");
             //builder.AppendLine("3. ");
             bool run = true;
@@ -45,6 +47,9 @@ namespace Main
                         break;
                     case 5:
                         program = new TableProgram();
+                        break;
+                    case 6:
+                        program = new QueueProgram();
                         break;
                     default:
                         program = null;

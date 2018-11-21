@@ -14,8 +14,8 @@ namespace Main.ServiceBus
 
         public ServiceBusProgram()
         {
-            serviceBusQueue = new ServiceBusQueue(AppSettings.ServiceBusConnectionString, AppSettings.QueueName);
-            serviceBusTopic = new ServiceBusTopic(AppSettings.ServiceBusConnectionString, AppSettings.TopicName, AppSettings.SubscriptionName);
+            serviceBusQueue = new ServiceBusQueue(AppSettings.ServiceBusConnectionString, AppSettings.ServiceBusQueueName);
+            serviceBusTopic = new ServiceBusTopic(AppSettings.ServiceBusConnectionString, AppSettings.ServiceBusTopicName, AppSettings.ServiceBusTopicSubscriptionName);
         }
 
         public void Run()

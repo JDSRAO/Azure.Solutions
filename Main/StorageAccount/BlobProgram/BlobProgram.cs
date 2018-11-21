@@ -10,8 +10,8 @@ namespace Main.StorageAccount.BlobProgram
     public class BlobProgram : IProgram
     {
         private Blob blob;
-        private const string containerName = "local-dev-playground";
-        private const string blobName = "quickStartBlob";
+        private const string containerName = AppSettings.StorageAccountBlobContainerName;
+        private const string blobName = AppSettings.StorageAccountBlobName;
 
         public BlobProgram()
         {
