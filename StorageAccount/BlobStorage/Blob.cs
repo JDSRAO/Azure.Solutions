@@ -14,11 +14,15 @@ namespace StorageAccount.BlobStorage
         private CloudStorageAccount storageAccount;
         private CloudBlobClient blobClient;
 
-        public string ConnectionString { get;}
+        public string ConnectionString { get; }
 
         public Blob(string connectionString)
         {
-            if(CloudStorageAccount.TryParse(connectionString, out storageAccount))
+            if(string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentNullException("No connection string found");
+            }
+            else if(CloudStorageAccount.TryParse(connectionString, out storageAccount))
             {
                 ConnectionString = connectionString;
                 blobClient = storageAccount.CreateCloudBlobClient();
@@ -100,7 +104,7 @@ namespace StorageAccount.BlobStorage
             }
         }
 
-        public async Task DeleteBlobContainer(string containerName)
+        public async Task DeleteBlobContainerAsync(string containerName)
         {
             try
             {
