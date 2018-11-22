@@ -45,6 +45,11 @@ namespace StorageAccount.QueueStorage
             try
             {
                 var queue = queueClient.GetQueueReference(queueName);
+                var exists = await queue.ExistsAsync();
+                if (!exists)
+                {
+                    throw new Exception($"No queue with {queueName} exists");
+                }
                 var message = new CloudQueueMessage(content);
                 await queue.AddMessageAsync(message);
             }
@@ -59,6 +64,11 @@ namespace StorageAccount.QueueStorage
             try
             {
                 var queue = queueClient.GetQueueReference(queueName);
+                var exists = await queue.ExistsAsync();
+                if (!exists)
+                {
+                    throw new Exception($"No queue with {queueName} exists");
+                }
                 var message = await queue.GetMessageAsync();
                 return message.AsString;
             }
@@ -73,6 +83,11 @@ namespace StorageAccount.QueueStorage
             try
             {
                 var queue = queueClient.GetQueueReference(queueName);
+                var exists = await queue.ExistsAsync();
+                if (!exists)
+                {
+                    throw new Exception($"No queue with {queueName} exists");
+                }
                 var message = await queue.GetMessageAsync();
                 message.SetMessageContent(updatedContent);
                 await queue.UpdateMessageAsync(message, TimeSpan.FromSeconds(10), MessageUpdateFields.Content | MessageUpdateFields.Visibility);
@@ -88,6 +103,11 @@ namespace StorageAccount.QueueStorage
             try
             {
                 var queue = queueClient.GetQueueReference(queueName);
+                var exists = await queue.ExistsAsync();
+                if (!exists)
+                {
+                    throw new Exception($"No queue with {queueName} exists");
+                }
                 var message = await queue.GetMessageAsync();
                 Console.WriteLine($"received message {message.AsString}");
                 await queue.DeleteMessageAsync(message);
