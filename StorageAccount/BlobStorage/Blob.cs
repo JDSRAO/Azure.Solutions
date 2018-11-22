@@ -14,6 +14,9 @@ namespace StorageAccount.BlobStorage
         private CloudStorageAccount storageAccount;
         private CloudBlobClient blobClient;
 
+        /// <summary>
+        /// Storage connection string
+        /// </summary>
         public string ConnectionString { get; }
 
         public Blob(string connectionString)
@@ -33,6 +36,11 @@ namespace StorageAccount.BlobStorage
             }
         }
 
+        /// <summary>
+        /// Creates a blob container
+        /// </summary>
+        /// <param name="blobName">Blob Name</param>
+        /// <returns>True if created successfully else false</returns>
         public async Task<bool> CreateBlobContainerIfnotExistsAsync(string blobName)
         {
             try
@@ -53,6 +61,13 @@ namespace StorageAccount.BlobStorage
             }
         }
 
+        /// <summary>
+        /// Upload a file to blob storage
+        /// </summary>
+        /// <param name="containerName">Blob container name</param>
+        /// <param name="blobName">Blob name</param>
+        /// <param name="path">Path of the file to upload</param>
+        /// <returns>Task object</returns>
         public async Task UploadFromFileAsync(string containerName, string blobName, string path)
         {
             try
@@ -67,6 +82,11 @@ namespace StorageAccount.BlobStorage
             }
         }
 
+        /// <summary>
+        /// List the URI of all the blobs present in a container
+        /// </summary>
+        /// <param name="containerName">Blob container name</param>
+        /// <returns>List of blobs URIs</returns>
         public async Task<List<Uri>> GetAllBlobsAsync(string containerName)
         {
             try
@@ -90,6 +110,14 @@ namespace StorageAccount.BlobStorage
             }
         }
 
+        /// <summary>
+        /// Download a file from blob storage
+        /// </summary>
+        /// <param name="containerName">Blob container name</param>
+        /// <param name="blobName">Blob name</param>
+        /// <param name="path">Path to download the file</param>
+        /// <param name="fileMode">File mode</param>
+        /// <returns></returns>
         public async Task DownloadToFileAsync(string containerName, string blobName, string path, FileMode fileMode = FileMode.Create)
         {
             try
@@ -104,6 +132,11 @@ namespace StorageAccount.BlobStorage
             }
         }
 
+        /// <summary>
+        /// Delete blob container
+        /// </summary>
+        /// <param name="containerName">Blob container name to delete</param>
+        /// <returns>Task object</returns>
         public async Task DeleteBlobContainerAsync(string containerName)
         {
             try
