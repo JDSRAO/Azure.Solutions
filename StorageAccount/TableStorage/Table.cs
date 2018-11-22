@@ -49,6 +49,11 @@ namespace StorageAccount.TableStorage
             try
             {
                 var table = tableClient.GetTableReference(entity.TableName);
+                var exists = await table.ExistsAsync();
+                if (!exists)
+                {
+                    throw new Exception($"No table with {entity.TableName} exists");
+                }
                 return await InsertDataAsync(table, entity);
             }
             catch (Exception ex)
@@ -62,6 +67,11 @@ namespace StorageAccount.TableStorage
             try
             {
                 var table = tableClient.GetTableReference(tableName);
+                var exists = await table.ExistsAsync();
+                if (!exists)
+                {
+                    throw new Exception($"No table with {entity.TableName} exists");
+                }
                 return await InsertDataAsync(table, entity);
             }
             catch (Exception ex)
@@ -75,6 +85,11 @@ namespace StorageAccount.TableStorage
             try
             {
                 var table = tableClient.GetTableReference(entities[0].TableName);
+                var exists = await table.ExistsAsync();
+                if (!exists)
+                {
+                    throw new Exception($"No table with {entities[0].TableName} exists");
+                }
                 TableBatchOperation batchOperations = new TableBatchOperation();
                 foreach (var entity in entities)
                 {
@@ -102,6 +117,11 @@ namespace StorageAccount.TableStorage
             try
             {
                 var table = tableClient.GetTableReference(entity.TableName);
+                var exists = await table.ExistsAsync();
+                if (!exists)
+                {
+                    throw new Exception($"No table with {entity.TableName} exists");
+                }
                 var retriveOperation = TableOperation.Retrieve(entity.PartitionKey, entity.RowKey);
                 var retriveResult = await table.ExecuteAsync(retriveOperation);
 
