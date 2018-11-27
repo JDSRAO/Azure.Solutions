@@ -41,9 +41,10 @@ namespace Redis.Cache
         /// </summary>
         /// <param name="key">Key</param>
         /// <param name="value">Value to set</param>
-        public void StringSet(string key, string value)
+        /// /// <param name="expiry">Time to live</param>
+        public void StringSet(string key, string value, TimeSpan? expiry = null)
         {
-            Connection.GetDatabase().StringSet(key, value);
+            Connection.GetDatabase().StringSet(key, value, expiry);
         }
 
         /// <summary>
