@@ -20,6 +20,10 @@ namespace ServiceBus.Implementations
 
         public ServiceBusTopic(string connectionString, string topicName, string subscriptionName)
         {
+            if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(topicName) || string.IsNullOrEmpty(subscriptionName))
+            {
+                throw new ArgumentNullException();
+            }
             ServiceBusConnectionString = connectionString;
             EntityName = topicName;
             topicClient = new TopicClient(connectionString, topicName);

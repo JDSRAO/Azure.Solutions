@@ -19,6 +19,10 @@ namespace ServiceBus.Implementations
 
         public ServiceBusQueue(string connectionString, string queueName)
         {
+            if(string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(queueName))
+            {
+                throw new ArgumentNullException();
+            }
             ServiceBusConnectionString = connectionString;
             EntityName = queueName;
             queueClient = new QueueClient(connectionString, queueName);

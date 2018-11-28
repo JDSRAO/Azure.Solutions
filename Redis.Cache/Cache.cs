@@ -28,6 +28,10 @@ namespace Redis.Cache
 
         public Cache(string connectionString)
         {
+            if(string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentNullException();
+            }
             ConnectionString = connectionString;
             lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
             {
@@ -44,6 +48,10 @@ namespace Redis.Cache
         /// /// <param name="expiry">Time to live</param>
         public void StringSet(string key, string value, TimeSpan? expiry = null)
         {
+            if(string.IsNullOrEmpty(key) || string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException();
+            }
             Connection.GetDatabase().StringSet(key, value, expiry);
         }
 
@@ -54,6 +62,10 @@ namespace Redis.Cache
         /// <returns>String value from cache</returns>
         public string StringGet(string key)
         {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentNullException();
+            }
             return Connection.GetDatabase().StringGet(key).ToString();
         }
     }
