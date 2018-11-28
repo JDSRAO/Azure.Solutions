@@ -13,12 +13,12 @@ namespace Redis.Cache
         /// <summary>
         /// Lazy connection multiplexer
         /// </summary>
-        private static Lazy<ConnectionMultiplexer> lazyConnection;
+        private Lazy<ConnectionMultiplexer> lazyConnection;
 
         /// <summary>
         /// Connection object
         /// </summary>
-        public static ConnectionMultiplexer Connection
+        public ConnectionMultiplexer Connection
         {
             get
             {
