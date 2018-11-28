@@ -69,14 +69,8 @@ namespace ServiceBus.Implementations
 
         private async Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
         {
-            Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
-            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
-            Console.WriteLine("Exception context for troubleshooting:");
-            Console.WriteLine($"- Endpoint: {context.Endpoint}");
-            Console.WriteLine($"- Entity Path: {context.EntityPath}");
-            Console.WriteLine($"- Executing Action: {context.Action}");
             await queueClient.AbandonAsync($"{ReceiveMode.PeekLock}");
-            //return Task.CompletedTask;
+            throw exceptionReceivedEventArgs.Exception;
         }
 
         #endregion
