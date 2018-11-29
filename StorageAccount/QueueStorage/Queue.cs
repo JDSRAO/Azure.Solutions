@@ -58,11 +58,7 @@ namespace StorageAccount.QueueStorage
             try
             {
                 var queue = queueClient.GetQueueReference(queueName);
-                var exists = await queue.ExistsAsync();
-                if (!exists)
-                {
-                    throw new Exception($"No queue with {queueName} exists");
-                }
+                await CheckIfQueueExists(queueName, queue);
                 var message = new CloudQueueMessage(content);
                 await queue.AddMessageAsync(message);
             }
@@ -82,11 +78,7 @@ namespace StorageAccount.QueueStorage
             try
             {
                 var queue = queueClient.GetQueueReference(queueName);
-                var exists = await queue.ExistsAsync();
-                if (!exists)
-                {
-                    throw new Exception($"No queue with {queueName} exists");
-                }
+                await CheckIfQueueExists(queueName, queue);
                 var message = await queue.GetMessageAsync();
                 return message.AsString;
             }
@@ -106,11 +98,7 @@ namespace StorageAccount.QueueStorage
             try
             {
                 var queue = queueClient.GetQueueReference(queueName);
-                var exists = await queue.ExistsAsync();
-                if (!exists)
-                {
-                    throw new Exception($"No queue with {queueName} exists");
-                }
+                await CheckIfQueueExists(queueName, queue);
                 var message = await queue.GetMessageAsync();
                 message.SetMessageContent(updatedContent);
                 await queue.UpdateMessageAsync(message, TimeSpan.FromSeconds(10), MessageUpdateFields.Content | MessageUpdateFields.Visibility);
@@ -131,11 +119,7 @@ namespace StorageAccount.QueueStorage
             try
             {
                 var queue = queueClient.GetQueueReference(queueName);
-                var exists = await queue.ExistsAsync();
-                if (!exists)
-                {
-                    throw new Exception($"No queue with {queueName} exists");
-                }
+                await CheckIfQueueExists(queueName, queue);
                 var message = await queue.GetMessageAsync();
                 await queue.DeleteMessageAsync(message);
                 return message.AsString;
@@ -161,6 +145,15 @@ namespace StorageAccount.QueueStorage
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        private static async Task CheckIfQueueExists(string queueName, CloudQueue queue)
+        {
+            var exists = await queue.ExistsAsync();
+            if (!exists)
+            {
+                throw new Exception($"No queue with {queueName} exists");
             }
         }
 
