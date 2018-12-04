@@ -30,5 +30,11 @@ namespace Main
         public const string StorageAccountBlobName = "quickStartBlob";
 
         #endregion
+
+        #region MongoDB Settings
+        public const string MongoDBConnectionString = "mongodb://127.0.0.1:27017";
+        public const string MongoDBDatabase = "test";
+        public const string MongoDBCollection = "testcol";
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using Main.RedisCache;
+﻿using Main.CosmosDB.Mongo.Driver;
+using Main.RedisCache;
 using Main.ServiceBus;
 using Main.StorageAccount.BlobProgram;
 using Main.StorageAccount.QueueProgram;
@@ -20,6 +21,7 @@ namespace Main
             builder.AppendLine("4. Blob Storage Account");
             builder.AppendLine("5. Table Storage Account");
             builder.AppendLine("6. Queue Storage Account");
+            builder.AppendLine("7. Cosmos DB : MongoDB Driver");
             builder.AppendLine("Enter your choice: ");
             //builder.AppendLine("3. ");
             bool run = true;
@@ -50,6 +52,9 @@ namespace Main
                         break;
                     case 6:
                         program = new QueueProgram();
+                        break;
+                    case 7:
+                        program = new MongoDriverProgram();
                         break;
                     default:
                         program = null;
