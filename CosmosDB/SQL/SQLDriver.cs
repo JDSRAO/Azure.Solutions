@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
+using Newtonsoft.Json;
 
 namespace CosmosDB.SQL
 {
@@ -137,11 +138,22 @@ namespace CosmosDB.SQL
             }
         }
 
-        public async Task<List<T>> GetAllDocumentsAsync<T>(string collectionId)
+        public async Task<List<T>> GetAllDocumentsAsync<T>(string collectionId = null)
         {
-            dynamic documents = await client.ReadDocumentFeedAsync(GetDocumentCollectionUri(collectionId));
-            dynamic data  = documents.ToList<dynamic>();
-            return data.ToList<T>();
+            dynamic documents = await client.ReadDocumentFeedAsync(GetDocumentCollectionUri(collectionId), new FeedOptions { MaxItemCount = 10 });
+            var documents0 = client.CreateDocumentQuery<T>(GetDocumentCollectionUri(collectionId));
+            foreach (var document in documents0)
+            {
+                Console.WriteLine($"{document}");
+            }
+            dynamic documents1 = client.CreateDocumentQuery<T>(GetDocumentCollectionUri(collectionId)).Select(x => JsonConvert.DeserializeObject<T>(x.ToString())).ToList();
+            List<T> data = new List<T>();
+            var test = (List<T>)documents;
+            foreach (var document in documents)
+            {
+                data.Add((T)document);
+            }
+            return data;
         }
 
         public async Task InsertDocumentAsync<T>(T document, string collectionId = null)

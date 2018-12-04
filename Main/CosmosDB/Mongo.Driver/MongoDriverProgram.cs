@@ -10,9 +10,9 @@ namespace Main.CosmosDB.Mongo.Driver
     public class MongoDriverProgram : IProgram
     {
         private MongoDriver mongoDriver;
-        private const string connectionString = AppSettings.MongoDBConnectionString;
-        private const string database = AppSettings.MongoDBDatabase;
-        private const string collection = AppSettings.MongoDBCollection;
+        private const string connectionString = AppSettings.CosmosDB_MongoDBConnectionString;
+        private const string database = AppSettings.CosmosDB_MongoDBDatabase;
+        private const string collection = AppSettings.CosmosDB_MongoDBCollection;
 
         public MongoDriverProgram()
         {
