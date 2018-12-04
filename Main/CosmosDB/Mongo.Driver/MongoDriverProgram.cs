@@ -26,6 +26,7 @@ namespace Main.CosmosDB.Mongo.Driver
             DropCollection().GetAwaiter().GetResult();
             InsertDocument().GetAwaiter().GetResult();
             GetAllDocuments().GetAwaiter().GetResult();
+            DropDatabase().GetAwaiter().GetResult();
 
             Console.WriteLine("Press any key to proceed");
             Console.ReadKey();
@@ -82,6 +83,21 @@ namespace Main.CosmosDB.Mongo.Driver
                 Console.WriteLine($"{employee.ToString()}");
             }
 
+        }
+
+        private async Task DropDatabase()
+        {
+            try
+            {
+                Console.WriteLine($"Press any key to drop database: {database}");
+                Console.ReadLine();
+                await mongoDriver.DropDatabaseAsync(database);
+                Console.WriteLine("Deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
