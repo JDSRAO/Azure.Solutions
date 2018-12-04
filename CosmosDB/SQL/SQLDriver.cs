@@ -144,6 +144,18 @@ namespace CosmosDB.SQL
             return data.ToList<T>();
         }
 
+        public async Task InsertDocumentAsync<T>(T document, string collectionId = null)
+        {
+            try
+            {
+                await client.UpsertDocumentAsync(GetDocumentCollectionUri(collectionId), document);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task UpdateDocumentAsync<T>(string id, T document)
         {
             try
