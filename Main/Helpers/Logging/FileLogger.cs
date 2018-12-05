@@ -11,21 +11,18 @@ namespace Main
         public string LogFilePath { get; }
 
         private FileStream stream;
-        private StreamWriter streamWriter;
 
         public FileLogger(string fileName, string path = null)
         {
-            if(string.IsNullOrEmpty(path))
-            {
-                path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            }
-            path = Path.Combine(path, fileName);
-            LogFilePath = path;
             try
             {
-                //stream = File.Create(path);
-                stream = File.OpenWrite(path);
-                streamWriter = new StreamWriter(path);
+                if (string.IsNullOrEmpty(path))
+                {
+                    path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                }
+                path = Path.Combine(path, fileName);
+                LogFilePath = path;
+                stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             }
             catch (Exception ex)
             {
@@ -38,13 +35,10 @@ namespace Main
             var ex = JsonConvert.SerializeObject(exception);
             StringBuilder builder = new StringBuilder();
             builder.AppendLine($"");
-            builder.AppendLine($"{DateTime.Now}");
-            builder.AppendLine("-- Exception Happened--");
+            builder.AppendLine($"-- {DateTime.Now}");
             builder.AppendLine($"{ex}");
             builder.AppendLine($"");
-            //File.WriteAllText(Path, builder.ToString());
-            File.AppendAllText(LogFilePath, builder.ToString());
-            //stream.WriteByte(ToByte(builder.ToString()));
+            stream.Write(ToByte(builder.ToString()));
         }
 
         public void Log(string message)

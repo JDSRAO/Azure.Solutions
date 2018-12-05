@@ -26,11 +26,11 @@ namespace Main
             builder.AppendLine("8. Cosmos DB : SQL API");
             builder.AppendLine("Enter your choice: ");
             bool run = true;
+            var logger = new FileLogger("logger.txt");
             while (run)
             {
                 Console.Clear();
                 IProgram program;
-                var logger = new FileLogger("logger.txt");
                 Console.Write(builder.ToString());
                 int choice = 0;
                 int.TryParse(Console.ReadLine(), out choice);
