@@ -6,6 +6,7 @@ namespace Main
 {
     interface IProgram
     {
+        ILogger Logger { get; set; }
         void Run();
     }
 }

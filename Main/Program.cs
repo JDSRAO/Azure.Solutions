@@ -25,12 +25,12 @@ namespace Main
             builder.AppendLine("7. Cosmos DB : MongoDB Driver");
             builder.AppendLine("8. Cosmos DB : SQL API");
             builder.AppendLine("Enter your choice: ");
-            //builder.AppendLine("3. ");
             bool run = true;
             while (run)
             {
                 Console.Clear();
                 IProgram program;
+                var logger = new FileLogger("logger.txt");
                 Console.Write(builder.ToString());
                 int choice = 0;
                 int.TryParse(Console.ReadLine(), out choice);
@@ -66,7 +66,7 @@ namespace Main
                         Environment.Exit(-1);
                         break;
                 }
-
+                program.Logger = logger;
                 program.Run();
             }
             Console.ReadKey();

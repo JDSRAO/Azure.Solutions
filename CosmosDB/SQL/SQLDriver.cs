@@ -124,11 +124,11 @@ namespace CosmosDB.SQL
             }
         }
 
-        public async Task<T> GetDocumentAsync<T>(string id)
+        public async Task<T> GetDocumentAsync<T>(string collectionid = null)
         {
             try
             {
-                var documentURl = GetDocumentUri(id);
+                var documentURl = GetDocumentCollectionUri(collectionid);
                 var document = await client.ReadDocumentCollectionAsync(documentURl);
                 return (T)(dynamic)document;
             }
@@ -141,19 +141,44 @@ namespace CosmosDB.SQL
         public async Task<List<T>> GetAllDocumentsAsync<T>(string collectionId = null)
         {
             dynamic documents = await client.ReadDocumentFeedAsync(GetDocumentCollectionUri(collectionId), new FeedOptions { MaxItemCount = 10 });
+            int count = 0;
+            string continuation = string.Empty;
+            List<T> data = new List<T>();
+            do
+            {
+                // Append the item count
+                count += documents.Count;
+
+                // Get the continuation so that we know when to stop.
+                continuation = documents.ResponseContinuation;
+            }
+            while (!string.IsNullOrEmpty(continuation));
+            
             var documents0 = client.CreateDocumentQuery<T>(GetDocumentCollectionUri(collectionId));
             foreach (var document in documents0)
             {
                 Console.WriteLine($"{document}");
             }
             dynamic documents1 = client.CreateDocumentQuery<T>(GetDocumentCollectionUri(collectionId)).Select(x => JsonConvert.DeserializeObject<T>(x.ToString())).ToList();
-            List<T> data = new List<T>();
+            //List<T> data = new List<T>();
             var test = (List<T>)documents;
             foreach (var document in documents)
             {
                 data.Add((T)document);
             }
             return data;
+        }
+
+        public T QueryDocument<T>(Func<T,bool> expression)
+        {
+            try
+            {
+                return Query<T>().Where(expression).AsEnumerable().FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task InsertDocumentAsync<T>(T document, string collectionId = null)
@@ -195,6 +220,11 @@ namespace CosmosDB.SQL
         }
 
         #region Private Methods
+
+        private IOrderedQueryable<T> Query<T>()
+        {
+            return client.CreateDocumentQuery<T>(DatabaseUri);
+        }
 
         private Uri GetDocumentCollectionUri(string collectionid = null)
         {
@@ -241,7 +271,7 @@ namespace CosmosDB.SQL
             }
         }
 
-        private async Task<bool> CheckIfCollectionExists(string collectionid)
+        private async Task<bool> CheckIfCollectionExists(string collectionid = null)
         {
             try
             {

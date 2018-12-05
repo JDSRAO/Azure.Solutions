@@ -14,6 +14,8 @@ namespace Main.CosmosDB.Mongo.Driver
         private const string database = AppSettings.CosmosDB_MongoDBDatabase;
         private const string collection = AppSettings.CosmosDB_MongoDBCollection;
 
+        public ILogger Logger { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public MongoDriverProgram()
         {
             mongoDriver = new MongoDriver(connectionString);

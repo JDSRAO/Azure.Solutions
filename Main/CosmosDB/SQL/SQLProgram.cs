@@ -15,6 +15,8 @@ namespace Main.CosmosDB.SQL
         private string collectionId = "Employee";
         private SQLDriver driver;
 
+        public ILogger Logger { get; set; }
+
         public SQLProgram()
         {
             driver = new SQLDriver(connectionString, key, databaseId);
@@ -29,7 +31,9 @@ namespace Main.CosmosDB.SQL
             CreateCollectionAsync().GetAwaiter().GetResult();
             PrintAllCollections().GetAwaiter().GetResult();
             //InsertDocumentIntoCollection().GetAwaiter().GetResult();
-            PrintAllDocuments().GetAwaiter().GetResult();
+            //PrintAllDocuments().GetAwaiter().GetResult();
+            //PrintDocument().GetAwaiter().GetResult();
+            QueryDocument();
             Console.WriteLine("Press any key to proceed");
             Console.ReadLine();
         }
@@ -107,6 +111,36 @@ namespace Main.CosmosDB.SQL
                 throw ex;
             }
             
+        }
+
+        private async Task PrintDocument()
+        {
+            try
+            {
+                string id = "f22905d6-31ab-479e-b67a-d1fb962115e4";
+                string activityId = "a4414735-6f9d-438d-bbf3-8aa0346fab98";
+                Console.WriteLine($"Get the document");
+                var document = await driver.GetDocumentAsync<Employee>(activityId);
+                Console.WriteLine($"{document}");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void QueryDocument()
+        {
+            try
+            {
+                Console.WriteLine("Querying the collection");
+                var content = driver.QueryDocument<Employee>(x => x.ID == 1);
+                Console.WriteLine($"{content}");
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex);
+            }
         }
     }
 }
