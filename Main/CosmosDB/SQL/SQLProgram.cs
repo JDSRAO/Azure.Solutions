@@ -31,8 +31,8 @@ namespace Main.CosmosDB.SQL
             CreateCollectionAsync().GetAwaiter().GetResult();
             PrintAllCollections().GetAwaiter().GetResult();
             //InsertDocumentIntoCollection().GetAwaiter().GetResult();
-            //PrintAllDocuments().GetAwaiter().GetResult();
-            //PrintDocument().GetAwaiter().GetResult();
+            PrintAllDocuments().GetAwaiter().GetResult();
+            PrintDocument().GetAwaiter().GetResult();
             QueryDocument();
             Console.WriteLine("Press any key to proceed");
             Console.ReadLine();
@@ -48,7 +48,7 @@ namespace Main.CosmosDB.SQL
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Log(ex);
             }
         }
 
@@ -62,7 +62,7 @@ namespace Main.CosmosDB.SQL
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Log(ex);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Main.CosmosDB.SQL
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Log(ex);
             }
             
         }
@@ -125,7 +125,7 @@ namespace Main.CosmosDB.SQL
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Log(ex);
             }
         }
 
