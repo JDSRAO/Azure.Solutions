@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Main
 {
-    interface IProgram
+    public interface ILogger
     {
-        ILogger Logger { get; set; }
-        void Run();
+        void Log(Exception exception);
+        void Log(string message);
     }
 }

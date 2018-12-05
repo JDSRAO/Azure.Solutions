@@ -14,6 +14,8 @@ namespace Main.RedisCache
             cache = new Cache(AppSettings.CacheConnectionString);
         }
 
+        public ILogger Logger { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public void Run()
         {
             Console.WriteLine("Cache program starting");

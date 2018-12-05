@@ -31,10 +31,15 @@ namespace Main
 
         #endregion
 
-        #region MongoDB Settings
-        public const string MongoDBConnectionString = "mongodb://127.0.0.1:27017";
-        public const string MongoDBDatabase = "test";
-        public const string MongoDBCollection = "testcol";
+        #region Cosmos DB Settings
+
+        public const string CosmosDB_MongoDBConnectionString = "mongodb://127.0.0.1:27017";
+        public const string CosmosDB_MongoDBDatabase = "test";
+        public const string CosmosDB_MongoDBCollection = "testcol";
+        public const string CosmosDB_SQLConnectionString = "https://localhost:8081";
+        public const string ComsomDB_SQLKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+        public const string CosmosDB_SQLDatabaseId = "SampleDatabase";
+
         #endregion
     }
 }

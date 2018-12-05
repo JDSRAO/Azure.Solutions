@@ -12,6 +12,8 @@ namespace Main.StorageAccount.TableProgram
         private Table table;
         private const string tableName = AppSettings.StorageAccountTableName;
 
+        public ILogger Logger { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public TableProgram()
         {
             table = new Table(AppSettings.StorageAccountConnectionString);

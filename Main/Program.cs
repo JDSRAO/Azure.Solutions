@@ -1,4 +1,5 @@
 ﻿using Main.CosmosDB.Mongo.Driver;
+using Main.CosmosDB.SQL;
 using Main.RedisCache;
 using Main.ServiceBus;
 using Main.StorageAccount.BlobProgram;
@@ -22,9 +23,10 @@ namespace Main
             builder.AppendLine("5. Table Storage Account");
             builder.AppendLine("6. Queue Storage Account");
             builder.AppendLine("7. Cosmos DB : MongoDB Driver");
+            builder.AppendLine("8. Cosmos DB : SQL API");
             builder.AppendLine("Enter your choice: ");
-            //builder.AppendLine("3. ");
             bool run = true;
+            var logger = new FileLogger("logger.txt");
             while (run)
             {
                 Console.Clear();
@@ -56,12 +58,15 @@ namespace Main
                     case 7:
                         program = new MongoDriverProgram();
                         break;
+                    case 8:
+                        program = new SQLProgram();
+                        break;
                     default:
                         program = null;
                         Environment.Exit(-1);
                         break;
                 }
-
+                program.Logger = logger;
                 program.Run();
             }
             Console.ReadKey();
