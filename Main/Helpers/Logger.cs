@@ -10,12 +10,16 @@ namespace Main
         public static void Log(Exception exception)
         {
             string ex = JsonConvert.SerializeObject(exception);
+            Console.WriteLine("-- Exception Happened--");
             Console.WriteLine($"{ex}");
+            Console.WriteLine("");
         }
 
         public static void Log(string message)
         {
+            Console.WriteLine("");
             Console.WriteLine($"{message}");
+            Console.WriteLine("");
         }
     }
 }
