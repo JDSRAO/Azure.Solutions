@@ -12,7 +12,7 @@ namespace Main.StorageAccount.TableProgram
         private Table table;
         private const string tableName = AppSettings.StorageAccountTableName;
 
-        public ILogger Logger { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ILogger Logger { get; set; }
 
         public TableProgram()
         {

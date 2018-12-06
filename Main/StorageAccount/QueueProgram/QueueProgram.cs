@@ -11,7 +11,7 @@ namespace Main.StorageAccount.QueueProgram
         private Queue queue;
         private const string queueName = AppSettings.StorageAccountQueueame;
 
-        public ILogger Logger { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ILogger Logger { get; set; }
 
         public QueueProgram()
         {

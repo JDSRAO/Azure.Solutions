@@ -13,7 +13,7 @@ namespace Main.StorageAccount.BlobProgram
         private const string containerName = AppSettings.StorageAccountBlobContainerName;
         private const string blobName = AppSettings.StorageAccountBlobName;
 
-        public ILogger Logger { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ILogger Logger { get; set; }
 
         public BlobProgram()
         {

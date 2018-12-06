@@ -12,7 +12,7 @@ namespace Main.ServiceBus
         IServiceBus serviceBusQueue;
         IServiceBus serviceBusTopic;
 
-        public ILogger Logger { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ILogger Logger { get; set; }
 
         public ServiceBusProgram()
         {
