@@ -22,7 +22,15 @@ namespace Main
                 }
                 path = Path.Combine(path, fileName);
                 LogFilePath = path;
-                stream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                if(File.Exists(path))
+                {
+                    stream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
+                }
+                else
+                {
+                    stream = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
+                }
+                
             }
             catch (Exception ex)
             {
