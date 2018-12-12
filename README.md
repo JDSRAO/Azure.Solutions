@@ -15,3 +15,4 @@ Below are the list of azure services implemented.
 
 ## Note:
 This code is not production ready and need to be tested before using in a production environment.
+Please refer [here for license](https://github.com/JDSRAO/Azure.Solutions/blob/master/LICENSE)
