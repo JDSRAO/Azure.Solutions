@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>KJDS.Azure.Redis.Cache</PackageId>
+    <Authors>KJDS</Authors>
+    <Product>KJDS.Azure.Redis.Cache</Product>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/JDSRAO/Azure.Solutions/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/JDSRAO/Azure.Solutions/tree/master/Redis.Cache</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JDSRAO/Azure.Solutions</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/JDSRAO/Azure.Solutions/tree/master/StorageAccount</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JDSRAO/Azure.Solutions</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/JDSRAO/Azure.Solutions/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageId>KJDS.Azure.StorageAccount</PackageId>
+    <Authors>KJDS</Authors>
+    <Product>KJDS.Azure.StorageAccount</Product>
   </PropertyGroup>
 
   <ItemGroup>

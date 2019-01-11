@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>KJDS.Azure.CosmosDB</PackageId>
+    <Authors>KJDS</Authors>
+    <Company>KJDS</Company>
+    <Product>KJDS.Azure.CosmosDB</Product>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/JDSRAO/Azure.Solutions/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/JDSRAO/Azure.Solutions/tree/master/CosmosDB</PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl>https://github.com/JDSRAO/Azure.Solutions</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
