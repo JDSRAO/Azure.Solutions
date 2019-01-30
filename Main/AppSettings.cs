@@ -8,7 +8,7 @@ namespace Main
     {
         #region Service Bus Settings
 
-        public const string ServiceBusConnectionString = "Endpoint=sb://sb-playground-ct-india.servicebus.windows.net/;SharedAccessKeyName=SWSharedAccessKey;SharedAccessKey=6gY8lEiwluap62tX2hF22CqT6ceC8U24P43pMOoMJm8=";
+        public const string ServiceBusConnectionString = "Endpoint={namespace};SharedAccessKeyName=SWSharedAccessKey;SharedAccessKey=6gY8lEiwluap62tX2hF22CqT6ceC8U24P43pMOoMJm8=";
         public const string ServiceBusQueueName = "srinivas-playground";
         public const string ServiceBusTopicName = "srinivas-topic-playground";
         public const string ServiceBusTopicSubscriptionName = "srinivas-topic-subscription-playground";
