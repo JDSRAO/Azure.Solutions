@@ -30,8 +30,8 @@ namespace Main.ServiceBus
         {
             Console.WriteLine("Queue Program Starting");
             serviceBusQueue.MessageReceived += OnMessageReceived;
-            await serviceBusQueue.SendMessage("Sample queue message");
-            serviceBusQueue.GetMessage();
+            await serviceBusQueue.SendMessageAsync("Sample queue message");
+            serviceBusQueue.GetMessageAsync();
             Console.ReadKey();
             Console.WriteLine("Press any key to proceed");
         }
@@ -40,8 +40,8 @@ namespace Main.ServiceBus
         {
             Console.WriteLine("Topic Program Starting");
             serviceBusTopic.MessageReceived += OnMessageReceived;
-            await serviceBusTopic.SendMessage("Sample topic message");
-            serviceBusTopic.GetMessage();
+            await serviceBusTopic.SendMessageAsync("Sample topic message");
+            serviceBusTopic.GetMessageAsync();
             Console.ReadKey();
             Console.WriteLine("Press any key to proceed");
         }

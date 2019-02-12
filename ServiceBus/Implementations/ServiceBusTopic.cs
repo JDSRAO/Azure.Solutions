@@ -30,7 +30,7 @@ namespace ServiceBus.Implementations
             subscriptionClient = new SubscriptionClient(connectionString, topicName, subscriptionName);
         }
 
-        public void GetMessage()
+        public void GetMessageAsync()
         {
             var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
             {
@@ -40,7 +40,7 @@ namespace ServiceBus.Implementations
             subscriptionClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
         }
 
-        public async Task SendMessage(string message)
+        public async Task SendMessageAsync(string message)
         {
             try
             {

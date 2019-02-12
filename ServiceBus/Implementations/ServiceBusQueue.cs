@@ -28,7 +28,7 @@ namespace ServiceBus.Implementations
             queueClient = new QueueClient(connectionString, queueName);
         }
 
-        public void GetMessage()
+        public void GetMessageAsync()
         {
             var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
             {
@@ -39,7 +39,7 @@ namespace ServiceBus.Implementations
             queueClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
         }
 
-        public async Task SendMessage(string message)
+        public async Task SendMessageAsync(string message)
         {
             try
             {
