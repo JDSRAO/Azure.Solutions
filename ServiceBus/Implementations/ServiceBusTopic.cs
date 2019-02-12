@@ -28,16 +28,7 @@ namespace ServiceBus.Implementations
             EntityName = topicName;
             topicClient = new TopicClient(connectionString, topicName);
             subscriptionClient = new SubscriptionClient(connectionString, topicName, subscriptionName);
-        }
-
-        public void GetMessageAsync()
-        {
-            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
-            {
-                MaxConcurrentCalls = 1,
-                AutoComplete = false
-            };
-            subscriptionClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+            RegisterMessageHandler();
         }
 
         public async Task SendMessageAsync(string message, bool useSessions = false)
@@ -54,6 +45,16 @@ namespace ServiceBus.Implementations
         }
 
         #region Private Methods
+
+        private void RegisterMessageHandler()
+        {
+            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+            {
+                MaxConcurrentCalls = 1,
+                AutoComplete = false
+            };
+            subscriptionClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+        }
 
         private async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {

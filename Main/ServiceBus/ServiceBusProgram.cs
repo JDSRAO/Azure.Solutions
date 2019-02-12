@@ -31,9 +31,9 @@ namespace Main.ServiceBus
             Console.WriteLine("Queue Program Starting");
             serviceBusQueue.MessageReceived += OnMessageReceived;
             await serviceBusQueue.SendMessageAsync("Sample queue message");
-            serviceBusQueue.GetMessageAsync();
-            Console.ReadKey();
+            
             Console.WriteLine("Press any key to proceed");
+            Console.ReadKey();
         }
 
         async Task MainTopicAsync()
@@ -41,9 +41,8 @@ namespace Main.ServiceBus
             Console.WriteLine("Topic Program Starting");
             serviceBusTopic.MessageReceived += OnMessageReceived;
             await serviceBusTopic.SendMessageAsync("Sample topic message");
-            serviceBusTopic.GetMessageAsync();
-            Console.ReadKey();
             Console.WriteLine("Press any key to proceed");
+            Console.ReadKey();
         }
 
         private static void OnMessageReceived(object sender, MessageReceivedArgs e)

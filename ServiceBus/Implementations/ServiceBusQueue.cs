@@ -26,17 +26,7 @@ namespace ServiceBus.Implementations
             ServiceBusConnectionString = connectionString;
             EntityName = queueName;
             queueClient = new QueueClient(connectionString, queueName);
-        }
-
-        public void GetMessageAsync()
-        {
-            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
-            {
-                MaxConcurrentCalls = 1,
-                AutoComplete = false
-            };
-
-            queueClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+            RegisterMessageHandler();
         }
 
         public async Task SendMessageAsync(string message, bool useSessions = false)
@@ -53,6 +43,17 @@ namespace ServiceBus.Implementations
         }
 
         #region Private Methods
+
+        private void RegisterMessageHandler()
+        {
+            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+            {
+                MaxConcurrentCalls = 1,
+                AutoComplete = false
+            };
+
+            queueClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+        }
 
         private async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {

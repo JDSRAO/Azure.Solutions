@@ -26,11 +26,6 @@ namespace ServiceBus
         Task SendMessageAsync(string message, bool useSessions = false);
 
         /// <summary>
-        /// Method to get messages
-        /// </summary>
-        void GetMessageAsync();
-
-        /// <summary>
         /// Event raised after receiving message
         /// </summary>
         event EventHandler<MessageReceivedArgs> MessageReceived;
