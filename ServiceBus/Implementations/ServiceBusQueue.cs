@@ -39,7 +39,7 @@ namespace ServiceBus.Implementations
             queueClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
         }
 
-        public async Task SendMessageAsync(string message)
+        public async Task SendMessageAsync(string message, bool useSessions = false)
         {
             try
             {

@@ -40,7 +40,7 @@ namespace ServiceBus.Implementations
             subscriptionClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
         }
 
-        public async Task SendMessageAsync(string message)
+        public async Task SendMessageAsync(string message, bool useSessions = false)
         {
             try
             {
