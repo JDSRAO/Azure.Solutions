@@ -18,12 +18,15 @@ namespace Main.RedisCache
 
         public void Run()
         {
+            var key = "key1";
+            var value = "jds-rao";
             Console.WriteLine("Cache program starting");
-            cache.StringSet("key1", "jds-rao");
-            var value = cache.StringGet("key1");
-            Console.WriteLine($"{value}");
-            Console.ReadKey();
+            Console.WriteLine($"Setting key : {key}, value = {value} ");
+            cache.StringSet(key, value);
+            var valueFromCache = cache.StringGet("key1");
+            Console.WriteLine($"Get value for key : {key}, value = {value}  from Redis as {valueFromCache}");
             Console.WriteLine("Press any key to proceed");
+            Console.ReadKey();
         }
     }
 }
