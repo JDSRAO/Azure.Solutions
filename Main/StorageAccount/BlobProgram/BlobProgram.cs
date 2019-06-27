@@ -25,7 +25,8 @@ namespace Main.StorageAccount.BlobProgram
             Console.WriteLine("Blob Storage program starting");
             CreateBlobContainerAsync().GetAwaiter().GetResult();
             UploadFromFileAsync().GetAwaiter().GetResult();
-            DownloadFromFileAsync().GetAwaiter().GetResult();
+            //DownloadFromFileAsync().GetAwaiter().GetResult();
+            ReadAsStreamAsync().GetAwaiter().GetResult();
             Console.WriteLine("Press any key to proceed");
             Console.ReadKey();
         }
@@ -57,6 +58,16 @@ namespace Main.StorageAccount.BlobProgram
             await blob.DownloadToFileAsync(containerName, blobName, sourceFile);
         }
 
+        private async Task ReadAsStreamAsync()
+        {
+            var contentStream = await blob.ReadAsStreamAsync(containerName, blobName);
+            using (var streamReader = new StreamReader(contentStream))
+            {
+                var content = await streamReader.ReadToEndAsync();
+                Console.WriteLine($"The content of the blob is :");
+                Console.WriteLine($"{content}");
+            }
+        }
 
     }
 }
