@@ -26,6 +26,10 @@ namespace Redis.Cache
             }
         }
 
+        public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
+
+        public event EventHandler<ConnectionFailedEventArgs> ConnectionRestored;
+
         public Cache(string connectionString)
         {
             if(string.IsNullOrEmpty(connectionString))
@@ -38,6 +42,8 @@ namespace Redis.Cache
                 string cacheConnection = connectionString;
                 return ConnectionMultiplexer.Connect(cacheConnection);
             });
+            Connection.ConnectionFailed += ConnectionFailed;
+            Connection.ConnectionRestored += ConnectionRestored;
         }
 
         /// <summary>
