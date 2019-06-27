@@ -133,6 +133,26 @@ namespace StorageAccount.BlobStorage
         }
 
         /// <summary>
+        /// Read blob as stream
+        /// </summary>
+        /// <param name="containerName">Blob container name</param>
+        /// <param name="blobName">Blob name</param>
+        /// <returns>Stream containing the blob content</returns>
+        public async Task<Stream> ReadAsStreamAsync(string containerName, string blobName)
+        {
+            try
+            {
+                var blobContainer = blobClient.GetContainerReference(containerName);
+                var blockBlob = blobContainer.GetBlobReference(blobName);
+                return await blockBlob.OpenReadAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Delete blob container
         /// </summary>
         /// <param name="containerName">Blob container name to delete</param>

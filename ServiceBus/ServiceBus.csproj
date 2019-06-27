@@ -2,10 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>KJDS.Aure.ServiceBus</PackageId>
+    <Authors>KJDS</Authors>
+    <Product>KJDS.Aure.ServiceBus</Product>
+    <PackageLicenseUrl>https://github.com/JDSRAO/Azure.Solutions/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/JDSRAO/Azure.Solutions/tree/master/ServiceBus</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/JDSRAO/Azure.Solutions</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
 </Project>

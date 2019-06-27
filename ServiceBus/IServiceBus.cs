@@ -23,12 +23,7 @@ namespace ServiceBus
         /// <param name="message">Message to send</param>
         /// <param name="numberOfMessagesToSend">Number of time the message to be sent</param>
         /// <returns>Task object</returns>
-        Task SendMessage(string message);
-
-        /// <summary>
-        /// Method to get messages
-        /// </summary>
-        void GetMessage();
+        Task SendMessageAsync(string message, bool useSessions = false);
 
         /// <summary>
         /// Event raised after receiving message
