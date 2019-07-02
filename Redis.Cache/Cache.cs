@@ -26,8 +26,14 @@ namespace Redis.Cache
             }
         }
 
+        /// <summary>
+        /// Connection failed event
+        /// </summary>
         public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
 
+        /// <summary>
+        /// Connection restored event
+        /// </summary>
         public event EventHandler<ConnectionFailedEventArgs> ConnectionRestored;
 
         public Cache(string connectionString)

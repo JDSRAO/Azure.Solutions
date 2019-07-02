@@ -8,6 +8,9 @@ namespace CosmosDB.MongoDB.Driver
 {
     public class MongoDriver
     {
+        /// <summary>
+        /// MongoDB connection string
+        /// </summary>
         public string ConnectionString { get; }
 
         private MongoClient client;
@@ -22,6 +25,10 @@ namespace CosmosDB.MongoDB.Driver
             client = new MongoClient(connectionString);
         }
 
+        /// <summary>
+        /// Gets all the databases in the server
+        /// </summary>
+        /// <returns>List of database names in the server</returns>
         public async Task<List<string>> GetAllDatabasesAsync()
         {
             try
@@ -35,6 +42,11 @@ namespace CosmosDB.MongoDB.Driver
             }
         }
 
+        /// <summary>
+        /// Drops a database
+        /// </summary>
+        /// <param name="database">Database to drop</param>
+        /// <returns>Task object</returns>
         public async Task DropDatabaseAsync(string database)
         {
             try
@@ -47,6 +59,12 @@ namespace CosmosDB.MongoDB.Driver
             }
         }
 
+        /// <summary>
+        /// Creates a collection 
+        /// </summary>
+        /// <param name="database">Database name</param>
+        /// <param name="collection">Collection name</param>
+        /// <returns></returns>
         public async Task CreateCollectionAsync(string database, string collection)
         {
             try
@@ -59,6 +77,14 @@ namespace CosmosDB.MongoDB.Driver
             }
         }
 
+        /// <summary>
+        /// Inserts data into collection
+        /// </summary>
+        /// <typeparam name="T">Type of collection</typeparam>
+        /// <param name="database"></param>
+        /// <param name="collection"></param>
+        /// <param name="document">Document to insert</param>
+        /// <returns></returns>
         public async Task InsertData<T>(string database, string collection, T document)
         {
             try
@@ -72,6 +98,13 @@ namespace CosmosDB.MongoDB.Driver
             }
         }
 
+        /// <summary>
+        /// Gets all the documents from the collection
+        /// </summary>
+        /// <typeparam name="T">Type of collection</typeparam>
+        /// <param name="database"></param>
+        /// <param name="collection"></param>
+        /// <returns>List of documents</returns>
         public async Task<List<T>> FindAllDocuments<T>(string database, string collection)
         {
             try
@@ -87,6 +120,11 @@ namespace CosmosDB.MongoDB.Driver
             }
         }
 
+        /// <summary>
+        /// Gets all the collections from a database
+        /// </summary>
+        /// <param name="database"></param>
+        /// <returns>Collection names</returns>
         public async Task<List<string>> GetAllCollectionsAsync(string database)
         {
             try
@@ -100,6 +138,12 @@ namespace CosmosDB.MongoDB.Driver
             }
         }
 
+        /// <summary>
+        /// Drops a collection
+        /// </summary>
+        /// <param name="database"></param>
+        /// <param name="collection"></param>
+        /// <returns></returns>
         public async Task DropCollectionAsync(string database, string collection)
         {
             try

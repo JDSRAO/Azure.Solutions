@@ -11,10 +11,19 @@ namespace ServiceBus.Implementations
     {
         private static IQueueClient queueClient;
 
+        /// <summary>
+        /// Service bus queue connection string
+        /// </summary>
         public string ServiceBusConnectionString { get; }
 
+        /// <summary>
+        /// Queue name
+        /// </summary>
         public string EntityName { get; }
 
+        /// <summary>
+        /// Message received event handler
+        /// </summary>
         public event EventHandler<MessageReceivedArgs> MessageReceived;
 
         public ServiceBusQueue(string connectionString, string queueName)
@@ -29,6 +38,12 @@ namespace ServiceBus.Implementations
             RegisterMessageHandler();
         }
 
+        /// <summary>
+        /// Send message to queue
+        /// </summary>
+        /// <param name="message">Message to send</param>
+        /// <param name="useSessions"></param>
+        /// <returns></returns>
         public async Task SendMessageAsync(string message, bool useSessions = false)
         {
             try
@@ -44,6 +59,9 @@ namespace ServiceBus.Implementations
 
         #region Private Methods
 
+        /// <summary>
+        /// Registers the queue client for subscription
+        /// </summary>
         private void RegisterMessageHandler()
         {
             var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
@@ -55,6 +73,12 @@ namespace ServiceBus.Implementations
             queueClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
         }
 
+        /// <summary>
+        /// Receives message and invokes the message received handler
+        /// </summary>
+        /// <param name="message">Message</param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         private async Task ProcessMessagesAsync(Message message, CancellationToken token)
         {
             try
@@ -68,6 +92,11 @@ namespace ServiceBus.Implementations
             }
         }
 
+        /// <summary>
+        /// Excetion handler 
+        /// </summary>
+        /// <param name="exceptionReceivedEventArgs"></param>
+        /// <returns></returns>
         private async Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
         {
             await queueClient.AbandonAsync($"{ReceiveMode.PeekLock}");
