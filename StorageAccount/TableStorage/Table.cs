@@ -31,6 +31,11 @@ namespace StorageAccount.TableStorage
             }
         }
 
+        /// <summary>
+        /// Creates a table
+        /// </summary>
+        /// <param name="tableName">Name of the table</param>
+        /// <returns>True if created successfully else false</returns>
         public async Task<bool> CreateTableAsync(string tableName)
         {
             try
@@ -44,6 +49,12 @@ namespace StorageAccount.TableStorage
             }
         }
 
+        /// <summary>
+        /// Inserts entity into table storage
+        /// </summary>
+        /// <typeparam name="T">Type of the entity</typeparam>
+        /// <param name="entity">Entity to insert</param>
+        /// <returns>True if created successfully else false</returns>
         public async Task<bool> InsertAsync<T>(T entity) where T : BaseEntity
         {
             try
@@ -62,6 +73,13 @@ namespace StorageAccount.TableStorage
             }
         }
 
+        /// <summary>
+        /// Inserts entity into table storage
+        /// </summary>
+        /// <typeparam name="T">Type of entity</typeparam>
+        /// <param name="tableName">Table name</param>
+        /// <param name="entity">Entity to insert</param>
+        /// <returns>True if inserted successfully else false</returns>
         public async Task<bool> InsertAsync<T>(string tableName, T entity) where T : BaseEntity
         {
             try
@@ -80,6 +98,12 @@ namespace StorageAccount.TableStorage
             }
         }
 
+        /// <summary>
+        /// Inserts entities into table storage
+        /// </summary>
+        /// <typeparam name="T">Type of entity</typeparam>
+        /// <param name="entities">List of entities</param>
+        /// <returns>True if inserted successfully else false</returns>
         public async Task<bool> InsertBulkAsync<T>(List<T> entities) where T : BaseEntity
         {
             try
@@ -112,6 +136,12 @@ namespace StorageAccount.TableStorage
             }
         }
 
+        /// <summary>
+        /// Delete entity from table storage
+        /// </summary>
+        /// <typeparam name="T">Type of the table</typeparam>
+        /// <param name="entity">Entity to delete</param>
+        /// <returns>True if deleted successfully else false</returns>
         public async Task<bool> DeleteEntityAsync<T>(T entity) where T : BaseEntity
         {
             try
@@ -150,6 +180,11 @@ namespace StorageAccount.TableStorage
             }
         }
 
+        /// <summary>
+        /// Deletes table from storage
+        /// </summary>
+        /// <param name="tableName">Table name</param>
+        /// <returns>True if deleted successfully else false</returns>
         public async Task<bool> DeleteTableAsync(string tableName)
         {
             try
@@ -163,6 +198,13 @@ namespace StorageAccount.TableStorage
             }
         }
 
+        /// <summary>
+        /// Inserts the entity into table storage
+        /// </summary>
+        /// <typeparam name="T">Type of the table</typeparam>
+        /// <param name="table">Table reference</param>
+        /// <param name="entity">Data to insert</param>
+        /// <returns>True if inserted successfully else false</returns>
         private async Task<bool> InsertDataAsync<T>(CloudTable table, T entity) where T : BaseEntity
         {
             try
@@ -183,6 +225,6 @@ namespace StorageAccount.TableStorage
                 throw ex;
             }
         }
-        
+
     }
 }
