@@ -1,6 +1,7 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -102,15 +103,23 @@ namespace CosmosDB.MongoDB.Driver
         /// Gets all the documents from the collection
         /// </summary>
         /// <typeparam name="T">Type of collection</typeparam>
-        /// <param name="database"></param>
         /// <param name="collection"></param>
-        /// <returns>List of documents</returns>
-        public async Task<List<T>> FindAllDocuments<T>(string database, string collection)
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public async Task<List<T>> FindAllDocuments<T>(string database, string collection, Expression<Func<T, bool>> predicate = null)
         {
             try
             {
                 IMongoCollection<T> dbCollection = GetCollection<T>(database, collection);
-                var filter = FilterDefinition<T>.Empty;
+                FilterDefinition<T> filter;
+                if (predicate == null)
+                {
+                    filter = FilterDefinition<T>.Empty;
+                }
+                else
+                {
+                    filter = predicate;
+                }
                 var documents = await dbCollection.FindAsync<T>(filter);
                 return documents.ToList();
             }

@@ -79,7 +79,7 @@ namespace Main.CosmosDB.Mongo.Driver
         private async Task GetAllDocuments()
         {
             Console.WriteLine($"Getting all documents from collecton: {collection}");
-            var employees = await mongoDriver.FindAllDocuments<Employee>(database, collection);
+            var employees = await mongoDriver.FindAllDocuments<Employee>(database, collection, x => x.ID == 31);
             foreach (var employee in employees)
             {
                 Console.WriteLine($"{employee.ToString()}");
