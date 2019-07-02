@@ -15,7 +15,7 @@ namespace StorageAccount.BlobStorage
         private CloudBlobClient blobClient;
 
         /// <summary>
-        /// Storage connection string
+        /// Blob storage connection string
         /// </summary>
         public string ConnectionString { get; }
 
