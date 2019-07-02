@@ -12,6 +12,9 @@ namespace StorageAccount.TableStorage
         private CloudStorageAccount storageAccount;
         private CloudTableClient tableClient;
 
+        /// <summary>
+        /// Table storage connection string
+        /// </summary>
         public string ConnectionString { get; }
 
         public Table(string connectionString)

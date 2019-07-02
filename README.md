@@ -1,9 +1,10 @@
-# Azure Solutions
-This repository contains wrappers libraries for azure servies to be used for ease of development. 
+# Azure Service Wrapper Libraries  (Dotnet)
+This repository contains wrappers libraries for azure servies for ease of development. 
 Below are the list of azure services implemented.
 * Azure Cosmos DB
   * MongoDB API
   * SQL API
+  * DocumentDB API
 * Azure Redis Cache
 * Azure Service Bus
   * Topic

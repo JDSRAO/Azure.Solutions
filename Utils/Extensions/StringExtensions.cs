@@ -5,6 +5,11 @@ namespace Utils.Extensions
 {
     public static class StringExtensions
     {
+        /// <summary>
+        /// Convert string to stream
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static Stream ToStream(this string str)
         {
             var result = new MemoryStream();
