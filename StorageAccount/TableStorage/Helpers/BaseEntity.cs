@@ -8,15 +8,15 @@ namespace StorageAccount.TableStorage
     public abstract class BaseEntity : TableEntity
     {
         [IgnoreProperty]
-        public abstract string TableName { get; }
+        public string TableName { get; }
         //[IgnoreProperty]
         //public string PartitionKeyValue { get => PartitionKey; set => PartitionKey = value; }
         //[IgnoreProperty]
         //public string RowKeyValue { get => RowKey; set => RowKey = value; }
 
-        public BaseEntity()
+        public BaseEntity(string tableName)
         {
-
+            TableName = tableName;
         }
     }
 }

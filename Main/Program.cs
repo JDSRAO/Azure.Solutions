@@ -23,7 +23,8 @@ namespace Main
             builder.AppendLine("5. Table Storage Account");
             builder.AppendLine("6. Queue Storage Account");
             builder.AppendLine("7. Cosmos DB : MongoDB Driver");
-            builder.AppendLine("8. Cosmos DB : SQL API");
+            builder.AppendLine("8. Cosmos DB : MongoDB Driver Single Instance");
+            builder.AppendLine("9. Cosmos DB : SQL API");
             builder.AppendLine("Enter your choice: ");
             bool run = true;
             var logger = new FileLogger("logger.txt");
@@ -59,6 +60,9 @@ namespace Main
                         program = new MongoDriverProgram();
                         break;
                     case 8:
+                        program = new MongoDriverSingleInstanceProgram();
+                        break;
+                    case 9:
                         program = new SQLProgram();
                         break;
                     default:
