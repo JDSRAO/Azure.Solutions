@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CosmosDB.MongoDB.Driver
 {
-    public class MongoDriver
+    public class MongoDriverSingleInstance
     {
         /// <summary>
         /// MongoDB connection string
@@ -15,8 +15,10 @@ namespace CosmosDB.MongoDB.Driver
         public string ConnectionString { get; }
 
         private MongoClient client;
+        private IMongoDatabase database { get; }
+        private string databaseName { get; }
 
-        public MongoDriver(string connectionString)
+        public MongoDriverSingleInstance(string connectionString, string database)
         {
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -24,6 +26,8 @@ namespace CosmosDB.MongoDB.Driver
             }
             ConnectionString = connectionString;
             client = new MongoClient(connectionString);
+            databaseName = database;
+            this.database = client.GetDatabase(databaseName);
         }
 
         /// <summary>
@@ -46,13 +50,12 @@ namespace CosmosDB.MongoDB.Driver
         /// <summary>
         /// Drops a database
         /// </summary>
-        /// <param name="database">Database to drop</param>
         /// <returns>Task object</returns>
-        public async Task DropDatabaseAsync(string database)
+        public async Task DropDatabaseAsync()
         {
             try
             {
-                await client.DropDatabaseAsync(database);
+                await client.DropDatabaseAsync(databaseName);
             }
             catch (Exception ex)
             {
@@ -63,14 +66,13 @@ namespace CosmosDB.MongoDB.Driver
         /// <summary>
         /// Creates a collection 
         /// </summary>
-        /// <param name="database">Database name</param>
         /// <param name="collection">Collection name</param>
         /// <returns></returns>
-        public async Task CreateCollectionAsync(string database, string collection)
+        public async Task CreateCollectionAsync(string collection)
         {
             try
             {
-                await GetDatabase(database).CreateCollectionAsync(collection);
+                await database.CreateCollectionAsync(collection);
             }
             catch (Exception ex)
             {
@@ -82,15 +84,14 @@ namespace CosmosDB.MongoDB.Driver
         /// Inserts data into collection
         /// </summary>
         /// <typeparam name="T">Type of collection</typeparam>
-        /// <param name="database"></param>
         /// <param name="collection"></param>
         /// <param name="document">Document to insert</param>
         /// <returns></returns>
-        public async Task InsertData<T>(string database, string collection, T document)
+        public async Task InsertData<T>(string collection, T document)
         {
             try
             {
-                IMongoCollection<T> dbCollection = GetCollection<T>(database, collection);
+                IMongoCollection<T> dbCollection = GetCollection<T>(collection);
                 await dbCollection.InsertOneAsync(document);
             }
             catch (Exception ex)
@@ -106,11 +107,11 @@ namespace CosmosDB.MongoDB.Driver
         /// <param name="collection"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<List<T>> FindAllDocuments<T>(string database, string collection, Expression<Func<T, bool>> predicate = null)
+        public async Task<List<T>> FindAllDocuments<T>(string collection, Expression<Func<T, bool>> predicate = null)
         {
             try
             {
-                IMongoCollection<T> dbCollection = GetCollection<T>(database, collection);
+                IMongoCollection<T> dbCollection = GetCollection<T>(collection);
                 FilterDefinition<T> filter;
                 if (predicate == null)
                 {
@@ -132,13 +133,12 @@ namespace CosmosDB.MongoDB.Driver
         /// <summary>
         /// Gets all the collections from a database
         /// </summary>
-        /// <param name="database"></param>
         /// <returns>Collection names</returns>
-        public async Task<List<string>> GetAllCollectionsAsync(string database)
+        public async Task<List<string>> GetAllCollectionsAsync()
         {
             try
             {
-                var collections = await GetDatabase(database).ListCollectionNamesAsync();
+                var collections = await database.ListCollectionNamesAsync();
                 return collections.ToList();
             }
             catch (Exception ex)
@@ -150,14 +150,13 @@ namespace CosmosDB.MongoDB.Driver
         /// <summary>
         /// Drops a collection
         /// </summary>
-        /// <param name="database"></param>
         /// <param name="collection"></param>
         /// <returns></returns>
-        public async Task DropCollectionAsync(string database, string collection)
+        public async Task DropCollectionAsync(string collection)
         {
             try
             {
-                await GetDatabase(database).DropCollectionAsync(collection);
+                await database.DropCollectionAsync(collection);
             }
             catch (Exception ex)
             {
@@ -167,14 +166,9 @@ namespace CosmosDB.MongoDB.Driver
 
         #region Private Methods
 
-        private IMongoDatabase GetDatabase(string database)
+        private IMongoCollection<T> GetCollection<T>(string collection)
         {
-            return client.GetDatabase(database);
-        }
-
-        private IMongoCollection<T> GetCollection<T>(string database, string collection)
-        {
-            return GetDatabase(database).GetCollection<T>(collection);
+            return database.GetCollection<T>(collection);
         }
 
         #endregion

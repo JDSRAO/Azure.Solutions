@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace Main.CosmosDB.Mongo.Driver
 {
-    public class MongoDriverProgram : IProgram
+    class MongoDriverSingleInstanceProgram : IProgram
     {
-        private MongoDriver mongoDriver;
+        public ILogger Logger { get; set; }
+
+        private MongoDriverSingleInstance mongoDriver;
         private const string connectionString = AppSettings.CosmosDB_MongoDBConnectionString;
         private const string database = AppSettings.CosmosDB_MongoDBDatabase;
         private const string collection = AppSettings.CosmosDB_MongoDBCollection;
 
-        public ILogger Logger { get ; set ; }
-
-        public MongoDriverProgram()
+        public MongoDriverSingleInstanceProgram()
         {
-            mongoDriver = new MongoDriver(connectionString);
+            mongoDriver = new MongoDriverSingleInstance(connectionString, database);
         }
 
         public void Run()
@@ -29,7 +29,6 @@ namespace Main.CosmosDB.Mongo.Driver
             InsertDocument().GetAwaiter().GetResult();
             GetAllDocuments().GetAwaiter().GetResult();
             DropDatabase().GetAwaiter().GetResult();
-
             Console.WriteLine("Press any key to proceed");
             Console.ReadKey();
         }
@@ -56,7 +55,7 @@ namespace Main.CosmosDB.Mongo.Driver
         {
             try
             {
-                await mongoDriver.DropCollectionAsync(database, collection);
+                await mongoDriver.DropCollectionAsync(collection);
             }
             catch (Exception ex)
             {
@@ -73,13 +72,13 @@ namespace Main.CosmosDB.Mongo.Driver
                 Name = "K. J. D. S. Srinivasa Rao",
                 Email = "Srinivas@cloudthing.com"
             };
-            await mongoDriver.InsertData<Employee>(database, collection, employee);
+            await mongoDriver.InsertData<Employee>(collection, employee);
         }
 
         private async Task GetAllDocuments()
         {
             Console.WriteLine($"Getting all documents from collecton: {collection}");
-            var employees = await mongoDriver.FindAllDocuments<Employee>(database, collection, x => x.ID == 31);
+            var employees = await mongoDriver.FindAllDocuments<Employee>(collection);
             foreach (var employee in employees)
             {
                 Console.WriteLine($"{employee.ToString()}");
@@ -93,7 +92,7 @@ namespace Main.CosmosDB.Mongo.Driver
             {
                 Console.WriteLine($"Press any key to drop database: {database}");
                 Console.ReadLine();
-                await mongoDriver.DropDatabaseAsync(database);
+                await mongoDriver.DropDatabaseAsync();
                 Console.WriteLine("Deleted successfully");
             }
             catch (Exception ex)
