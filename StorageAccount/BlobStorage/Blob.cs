@@ -82,6 +82,44 @@ namespace StorageAccount.BlobStorage
             }
         }
 
+
+        public async Task UploadFromStreamAsync(string containerName, string blobName, Stream source)
+        {
+            try
+            {
+                var blobContainer = blobClient.GetContainerReference(containerName);
+                var blockBlob = blobContainer.GetBlockBlobReference(blobName);
+                await blockBlob.UploadFromStreamAsync(source);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Upload a file to blob storage
+        /// </summary>
+        /// <param name="containerName">Blob container name</param>
+        /// <param name="blobName">Blob name</param>
+        /// <param name="content">Content to upload</param>
+        /// <param name="contentType">Content type being uploaded</param>
+        /// <returns></returns>
+        public async Task UploadTextAsync(string containerName, string blobName, string content, string contentType)
+        {
+            try
+            {
+                var blobContainer = blobClient.GetContainerReference(containerName);
+                var blockBlob = blobContainer.GetBlockBlobReference(blobName);
+                blockBlob.Properties.ContentType = contentType;
+                await blockBlob.UploadTextAsync(content);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         /// <summary>
         /// List the URI of all the blobs present in a container
         /// </summary>
