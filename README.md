@@ -1,5 +1,5 @@
 # Azure Service Wrapper Libraries  (Dotnet)
-This repository contains wrappers libraries for azure servies for ease of development. 
+This repository contains wrappers libraries for azure services for ease of development. 
 Below are the list of azure services implemented.
 * Azure Cosmos DB
   * MongoDB API
