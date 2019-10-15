@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using StorageAccount.TableStorage.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -198,6 +199,21 @@ namespace StorageAccount.TableStorage
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public async Task<T> GetDataAsync<T>(string tableName, string partitionKey, string rowKey, List<string> selectColumns = null) where T : BaseEntity
+        {
+            var table = tableClient.GetTableReference(tableName);
+            var tableOperation = TableOperation.Retrieve<T>(partitionKey, rowKey, selectColumns);
+            var status = await table.ExecuteAsync(tableOperation);
+            if (status.HttpStatusCode == 200)
+            {
+                return (T) status.Result;
+            }
+            else
+            {
+                throw new TableException(status);
             }
         }
 
