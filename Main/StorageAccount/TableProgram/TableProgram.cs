@@ -52,7 +52,7 @@ namespace Main.StorageAccount.TableProgram
             try
             {
                 var transactionID = Guid.NewGuid().ToString();
-                var elasticTableName = "ElasticData";
+                var elasticTableName = "stagingSchema" + ToTimeStamp(DateTime.UtcNow);
                 await table.CreateTableAsync(elasticTableName);
                 Console.WriteLine($"Inserting data into table: {elasticTableName}");
                 List<ElasticTableEntity> items = new List<ElasticTableEntity>();
