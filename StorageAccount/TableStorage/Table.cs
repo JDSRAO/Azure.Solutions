@@ -217,6 +217,55 @@ namespace StorageAccount.TableStorage
             }
         }
 
+        public async Task<bool> InsertBulkElasticAsync<T>(string tableName, List<T> entities) where T : ElasticTableEntity
+        {
+            try
+            {
+                var table = tableClient.GetTableReference(tableName);
+                var exists = await table.ExistsAsync();
+                if (!exists)
+                {
+                    throw new Exception($"No table with {tableName} exists");
+                }
+                TableBatchOperation batchOperations = new TableBatchOperation();
+                foreach (var entity in entities)
+                {
+                    batchOperations.Insert(entity);
+                }
+
+                var status = await table.ExecuteBatchAsync(batchOperations);
+                if (status.Count > 0)
+                {
+                    return await Task.FromResult(true);
+                }
+                else
+                {
+                    return await Task.FromResult(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<ElasticTableEntity>> GetDataElasticAsync(string tableName)
+        {
+            var table = tableClient.GetTableReference(tableName);
+            var query = new TableQuery<ElasticTableEntity>();
+            TableContinuationToken token = null;
+            var items = new List<ElasticTableEntity>();
+            do
+            {
+                var status = await table.ExecuteQuerySegmentedAsync(query, token);
+                token = status.ContinuationToken;
+                items.AddRange(status);
+            }
+            while (token != null);
+
+            return items;
+        }
+
         /// <summary>
         /// Inserts the entity into table storage
         /// </summary>
