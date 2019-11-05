@@ -9,8 +9,8 @@ namespace ServiceBus.Implementations
 {
     public class ServiceBusTopic
     {
-        private ITopicClient topicClient { get; set; }
-        private ISubscriptionClient subscriptionClient { get; set; }
+        private ITopicClient topicClient { get; }
+        private ISubscriptionClient subscriptionClient { get; }
         private ConstructorCreateMode CurrentConstructorCreateMode { get; }
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace ServiceBus.Implementations
         private enum ConstructorCreateMode { SingleUse, WithTopic, OnlyConnectionString }
 
         /// <summary>
-        /// Service bus topic connection string
+        /// Service bus connection string
         /// </summary>
         public string ServiceBusConnectionString { get; }
 
