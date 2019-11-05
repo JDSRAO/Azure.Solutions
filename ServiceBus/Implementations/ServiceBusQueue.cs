@@ -7,9 +7,15 @@ using System.Threading.Tasks;
 
 namespace ServiceBus.Implementations
 {
-    public class ServiceBusQueue : IServiceBus
+    public class ServiceBusQueue
     {
-        private static IQueueClient queueClient;
+        private IQueueClient queueClient { get; }
+        private ConstructorCreateMode CurrentConstructorCreateMode { get; }
+
+        /// <summary>
+        /// Constructor identifier for validation
+        /// </summary>
+        private enum ConstructorCreateMode { WithQueue, OnlyConnectionString }
 
         /// <summary>
         /// Service bus queue connection string
@@ -26,35 +32,52 @@ namespace ServiceBus.Implementations
         /// </summary>
         public event EventHandler<MessageReceivedArgs> MessageReceived;
 
+        public ServiceBusQueue(string connectionString)
+        {
+            if(string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentNullException("Connection string is empty or null");
+            }
+            ServiceBusConnectionString = connectionString;
+            CurrentConstructorCreateMode = ConstructorCreateMode.OnlyConnectionString;
+        }
+
         public ServiceBusQueue(string connectionString, string queueName)
         {
             if(string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(queueName))
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Connection string or queue name is either null or empty");
             }
+            CurrentConstructorCreateMode = ConstructorCreateMode.WithQueue;
             ServiceBusConnectionString = connectionString;
             EntityName = queueName;
             queueClient = new QueueClient(connectionString, queueName);
-            RegisterMessageHandler();
         }
 
         /// <summary>
-        /// Send message to queue
+        /// Sends message to queue
         /// </summary>
         /// <param name="message">Message to send</param>
-        /// <param name="useSessions"></param>
         /// <returns></returns>
-        public async Task SendMessageAsync(string message, bool useSessions = false)
+        public async Task SendMessageAsync(string message)
         {
-            try
-            {
-                var messageBody = new Message(Encoding.UTF8.GetBytes(message));
-                await queueClient.SendAsync(messageBody);
-            }
-            catch (Exception exception)
-            {
-                throw exception;
-            }
+            ValidateTopicAndSubscriptionSettings(ConstructorCreateMode.WithQueue);
+            var messageBody = new Message(Encoding.UTF8.GetBytes(message));
+            await queueClient.SendAsync(messageBody);
+        }
+
+        /// <summary>
+        /// Sends message to queue
+        /// </summary>
+        /// <param name="queueName">Queue to which the message has to be sent</param>
+        /// <param name="message">Message to send</param>
+        /// <returns></returns>
+        public async Task SendMessageAsync(string queueName, string message)
+        {
+            ValidateTopicAndSubscriptionSettings(ConstructorCreateMode.OnlyConnectionString);
+            var queueClient = new QueueClient(ServiceBusConnectionString, queueName);
+            var messageBody = new Message(Encoding.UTF8.GetBytes(message));
+            await queueClient.SendAsync(messageBody);
         }
 
         #region Private Methods
@@ -101,6 +124,20 @@ namespace ServiceBus.Implementations
         {
             await queueClient.AbandonAsync($"{ReceiveMode.PeekLock}");
             throw exceptionReceivedEventArgs.Exception;
+        }
+
+        /// <summary>
+        /// Validate settings based on constructor used
+        /// </summary>
+        /// <param name="constructorCreateMode">Constructor mode to validate</param>
+        private void ValidateTopicAndSubscriptionSettings(ConstructorCreateMode constructorCreateMode)
+        {
+            if (CurrentConstructorCreateMode != constructorCreateMode)
+            {
+                var argumentNull = new ArgumentNullException($"Undefined queue name");
+                var invalidOperation = new InvalidOperationException($"Undefined queue name", argumentNull);
+                throw invalidOperation;
+            }
         }
 
         #endregion
