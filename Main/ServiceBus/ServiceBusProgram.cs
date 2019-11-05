@@ -9,7 +9,7 @@ namespace Main.ServiceBus
 {
     public class ServiceBusProgram : IProgram
     {
-        IServiceBus serviceBusQueue;
+        ServiceBusQueue serviceBusQueue;
         ServiceBusTopic serviceBusTopic;
 
         public ILogger Logger { get; set; }
