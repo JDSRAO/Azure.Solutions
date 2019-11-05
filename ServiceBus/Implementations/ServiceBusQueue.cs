@@ -126,6 +126,10 @@ namespace ServiceBus.Implementations
             throw exceptionReceivedEventArgs.Exception;
         }
 
+        /// <summary>
+        /// Validate settings based on constructor used
+        /// </summary>
+        /// <param name="constructorCreateMode">Constructor mode to validate</param>
         private void ValidateTopicAndSubscriptionSettings(ConstructorCreateMode constructorCreateMode)
         {
             if (CurrentConstructorCreateMode != constructorCreateMode)
