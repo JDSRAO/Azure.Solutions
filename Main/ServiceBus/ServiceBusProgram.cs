@@ -9,8 +9,8 @@ namespace Main.ServiceBus
 {
     public class ServiceBusProgram : IProgram
     {
-        IServiceBus serviceBusQueue;
-        IServiceBus serviceBusTopic;
+        ServiceBusQueue serviceBusQueue;
+        ServiceBusTopic serviceBusTopic;
 
         public ILogger Logger { get; set; }
 
@@ -28,9 +28,18 @@ namespace Main.ServiceBus
 
         async Task MainQueueAsync()
         {
-            Console.WriteLine("Queue Program Starting");
-            serviceBusQueue.MessageReceived += OnMessageReceived;
-            await serviceBusQueue.SendMessageAsync("Sample queue message");
+            Console.WriteLine("Queue Program Started");
+            try
+            {
+                serviceBusQueue.MessageReceived += OnMessageReceived;
+                Console.WriteLine("Sending message to service bus");
+                await serviceBusQueue.SendMessageAsync("Sample queue message");
+                Console.WriteLine("Message sent successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error occurred" + ex.Message);
+            }
             
             Console.WriteLine("Press any key to proceed");
             Console.ReadKey();
@@ -38,9 +47,22 @@ namespace Main.ServiceBus
 
         async Task MainTopicAsync()
         {
-            Console.WriteLine("Topic Program Starting");
-            serviceBusTopic.MessageReceived += OnMessageReceived;
-            await serviceBusTopic.SendMessageAsync("Sample topic message");
+            Console.WriteLine("Topic Program Started");
+            try
+            {
+                serviceBusTopic.Subscription1 += OnMessageReceived;
+                Console.WriteLine("Sending message to service bus");
+                await serviceBusTopic.SendMessageAsync("Sample topic message");
+                Console.WriteLine("Message sent successfully");
+                var serviceBusClient = new ServiceBusTopic(AppSettings.ServiceBusConnectionString, AppSettings.ServiceBusTopicName); //, 
+                                                                                                                                     //await serviceBusTopic.SendMessageAsync("Sample topic message");
+                await serviceBusClient.SendMessageAsync($"{AppSettings.ServiceBusTopicSubscriptionName}1", "Sample topic message");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error occurred" + ex.Message);
+            }
+            
             Console.WriteLine("Press any key to proceed");
             Console.ReadKey();
         }
