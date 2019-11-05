@@ -7,10 +7,16 @@ using System.Threading.Tasks;
 
 namespace ServiceBus.Implementations
 {
-    public class ServiceBusTopic : IServiceBus
+    public class ServiceBusTopic
     {
-        private static ITopicClient topicClient;
-        private static ISubscriptionClient subscriptionClient;
+        private ITopicClient topicClient { get; set; }
+        private ISubscriptionClient subscriptionClient { get; set; }
+        private ConstructorCreateMode CurrentConstructorCreateMode { get; }
+
+        /// <summary>
+        /// Constructor identifier for validation
+        /// </summary>
+        private enum ConstructorCreateMode { SingleUse, WithTopic, OnlyConnectionString }
 
         /// <summary>
         /// Service bus topic connection string
@@ -33,30 +39,89 @@ namespace ServiceBus.Implementations
             {
                 throw new ArgumentNullException();
             }
+            CurrentConstructorCreateMode = ConstructorCreateMode.SingleUse;
             ServiceBusConnectionString = connectionString;
             EntityName = topicName;
             topicClient = new TopicClient(connectionString, topicName);
             subscriptionClient = new SubscriptionClient(connectionString, topicName, subscriptionName);
-            RegisterMessageHandler();
+        }
+
+        public ServiceBusTopic(string connectionString, string topicName)
+        {
+            if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(topicName))
+            {
+                throw new ArgumentNullException();
+            }
+            CurrentConstructorCreateMode = ConstructorCreateMode.WithTopic;
+            ServiceBusConnectionString = connectionString;
+            EntityName = topicName;
+            topicClient = new TopicClient(connectionString, topicName);
+        }
+
+        public ServiceBusTopic(string connectionString)
+        {
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentNullException();
+            }
+            CurrentConstructorCreateMode = ConstructorCreateMode.OnlyConnectionString;
+            ServiceBusConnectionString = connectionString;
         }
 
         /// <summary>
         /// Sends message to topic
         /// </summary>
         /// <param name="message">Message to send</param>
-        /// <param name="useSessions"></param>
         /// <returns></returns>
-        public async Task SendMessageAsync(string message, bool useSessions = false)
+        public async Task SendMessageAsync(string message, Dictionary<string, object> properties = null)
         {
-            try
+            ValidateTopicAndSubscriptionSettings(ConstructorCreateMode.SingleUse);
+            var messageBody = new Message(Encoding.UTF8.GetBytes(message));
+            if (properties != null)
             {
-                var messageBody = new Message(Encoding.UTF8.GetBytes(message));
-                await topicClient.SendAsync(messageBody);
+                foreach (var prop in properties)
+                {
+                    messageBody.UserProperties.Add(prop);
+                }
             }
-            catch (Exception exception)
+            await topicClient.SendAsync(messageBody);
+        }
+
+        /// <summary>
+        /// Sends a service bus message to topic
+        /// </summary>
+        /// <param name="subscriptionName">Subscription to which the message has to be sent</param>
+        /// <param name="message">Message to send</param>
+        /// <returns></returns>
+        public async Task SendMessageAsync(string subscriptionName, string message, Dictionary<string, object> properties = null)
+        {
+            ValidateTopicAndSubscriptionSettings(ConstructorCreateMode.WithTopic);
+            var subscriptionClient = new SubscriptionClient(ServiceBusConnectionString, EntityName, subscriptionName);
+            var messageBody = new Message(Encoding.UTF8.GetBytes(message));
+            if (properties != null)
             {
-                Console.WriteLine($"{DateTime.Now} :: Exception: {exception.Message}");
+                foreach (var prop in properties)
+                {
+                    messageBody.UserProperties.Add(prop);
+                }
             }
+            await topicClient.SendAsync(messageBody);
+        }
+
+        public async Task SendMessageAsync(string topicName, string subscriptionName, string message, Dictionary<string, object> properties = null)
+        {
+            ValidateTopicAndSubscriptionSettings(ConstructorCreateMode.OnlyConnectionString);
+            var topicClient = new TopicClient(ServiceBusConnectionString, topicName);
+            var subscriptionClient = new SubscriptionClient(ServiceBusConnectionString, EntityName, subscriptionName);
+            var messageBody = new Message(Encoding.UTF8.GetBytes(message));
+            if (properties != null)
+            {
+                foreach (var prop in properties)
+                {
+                    messageBody.UserProperties.Add(prop);
+                }
+            }
+            await topicClient.SendAsync(messageBody);
         }
 
         #region Private Methods
@@ -98,10 +163,20 @@ namespace ServiceBus.Implementations
         /// </summary>
         /// <param name="exceptionReceivedEventArgs"></param>
         /// <returns></returns>
-        private async static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        private async Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
         {
             await subscriptionClient.AbandonAsync($"{ReceiveMode.PeekLock}");
             throw exceptionReceivedEventArgs.Exception;
+        }
+
+        private void ValidateTopicAndSubscriptionSettings(ConstructorCreateMode constructorCreateMode)
+        {
+            if (CurrentConstructorCreateMode != constructorCreateMode)
+            {
+                var argumentNull = new ArgumentNullException($"Undefined entity or subscription name");
+                var invalidOperation = new InvalidOperationException($"Undefined entity or subscription name", argumentNull);
+                throw invalidOperation;
+            }
         }
 
         #endregion 
