@@ -50,7 +50,7 @@ namespace Main.ServiceBus
             Console.WriteLine("Topic Program Started");
             try
             {
-                serviceBusTopic.MessageReceived += OnMessageReceived;
+                serviceBusTopic.Subscription1 += OnMessageReceived;
                 Console.WriteLine("Sending message to service bus");
                 await serviceBusTopic.SendMessageAsync("Sample topic message");
                 Console.WriteLine("Message sent successfully");

@@ -29,10 +29,26 @@ namespace ServiceBus.Implementations
         public string EntityName { get; }
 
         /// <summary>
-        /// Message received event handler
+        /// Message received event handler to be used with constructor #1
         /// </summary>
-        public event EventHandler<MessageReceivedArgs> MessageReceived;
+        public event EventHandler<MessageReceivedArgs> Subscription1;
 
+        /// <summary>
+        /// Message received event handler to be used with constructor #2
+        /// </summary>
+        public event EventHandler<MessageReceivedArgs> Subscription2;
+
+        /// <summary>
+        /// Message received event handler to be used with constructor #3
+        /// </summary>
+        public event EventHandler<MessageReceivedArgs> Subscription3;
+
+        /// <summary>
+        /// Construrctor #1
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <param name="topicName"></param>
+        /// <param name="subscriptionName"></param>
         public ServiceBusTopic(string connectionString, string topicName, string subscriptionName)
         {
             if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(topicName) || string.IsNullOrEmpty(subscriptionName))
@@ -46,6 +62,11 @@ namespace ServiceBus.Implementations
             subscriptionClient = new SubscriptionClient(connectionString, topicName, subscriptionName);
         }
 
+        /// <summary>
+        /// Construrctor #2
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <param name="topicName"></param>
         public ServiceBusTopic(string connectionString, string topicName)
         {
             if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(topicName))
@@ -58,6 +79,10 @@ namespace ServiceBus.Implementations
             topicClient = new TopicClient(connectionString, topicName);
         }
 
+        /// <summary>
+        /// Construrctor #3
+        /// </summary>
+        /// <param name="connectionString"></param>
         public ServiceBusTopic(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
@@ -124,19 +149,60 @@ namespace ServiceBus.Implementations
             await topicClient.SendAsync(messageBody);
         }
 
+        public async Task RegisterMessageReceiverHandler()
+        {
+            await Task.Run(() => 
+            {
+                ValidateTopicAndSubscriptionSettings(ConstructorCreateMode.SingleUse);
+                RegisterMessageHandler(subscriptionClient, ConstructorCreateMode.SingleUse);
+            });
+        }
+
+        public async Task RegisterMessageReceiverHandler(string subscriptionName)
+        {
+            await Task.Run(() =>
+            {
+                ValidateTopicAndSubscriptionSettings(ConstructorCreateMode.WithTopic);
+                RegisterMessageHandler(subscriptionClient, ConstructorCreateMode.WithTopic);
+            });
+        }
+
+        public async Task RegisterMessageReceiverHandler(string topicName, string subscriptionName)
+        {
+            await Task.Run(() =>
+            {
+                ValidateTopicAndSubscriptionSettings(ConstructorCreateMode.OnlyConnectionString);
+                RegisterMessageHandler(subscriptionClient, ConstructorCreateMode.OnlyConnectionString);
+            });
+        }
+
         #region Private Methods
 
         /// <summary>
         /// Registers the topic client for subscription
         /// </summary>
-        private void RegisterMessageHandler()
+        private void RegisterMessageHandler(ISubscriptionClient subscriptionClient, ConstructorCreateMode constructorCreateMode)
         {
             var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
             {
                 MaxConcurrentCalls = 1,
                 AutoComplete = false
             };
-            subscriptionClient.RegisterMessageHandler(ProcessMessagesAsync, messageHandlerOptions);
+
+            switch (constructorCreateMode)
+            {
+                case ConstructorCreateMode.SingleUse:
+                    subscriptionClient.RegisterMessageHandler(RegisterSubscription1, messageHandlerOptions);
+                    break;
+                case ConstructorCreateMode.WithTopic:
+                    subscriptionClient.RegisterMessageHandler(RegisterSubscription2, messageHandlerOptions);
+                    break;
+                case ConstructorCreateMode.OnlyConnectionString:
+                    subscriptionClient.RegisterMessageHandler(RegisterSubscription3, messageHandlerOptions);
+                    break;
+                default:
+                    throw new InvalidOperationException("Invalid constructor mode");
+            }
         }
 
         /// <summary>
@@ -145,17 +211,34 @@ namespace ServiceBus.Implementations
         /// <param name="message">Message</param>
         /// <param name="token"></param>
         /// <returns></returns>
-        private async Task ProcessMessagesAsync(Message message, CancellationToken token)
+        private async Task RegisterSubscription1(Message message, CancellationToken token)
         {
-            try
-            {
-                MessageReceived?.Invoke(this, new MessageReceivedArgs(message.Body));
-                await subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            Subscription1?.Invoke(this, new MessageReceivedArgs(message.Body));
+            await subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
+        }
+
+        /// <summary>
+        /// Receives message and invokes the message received handler
+        /// </summary>
+        /// <param name="message">Message</param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private async Task RegisterSubscription2(Message message, CancellationToken token)
+        {
+            Subscription2?.Invoke(this, new MessageReceivedArgs(message.Body));
+            await subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
+        }
+
+        /// <summary>
+        /// Receives message and invokes the message received handler
+        /// </summary>
+        /// <param name="message">Message</param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private async Task RegisterSubscription3(Message message, CancellationToken token)
+        {
+            Subscription3?.Invoke(this, new MessageReceivedArgs(message.Body));
+            await subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
         }
 
         /// <summary>
@@ -169,6 +252,10 @@ namespace ServiceBus.Implementations
             throw exceptionReceivedEventArgs.Exception;
         }
 
+        /// <summary>
+        /// Validate settings based on constructor used
+        /// </summary>
+        /// <param name="constructorCreateMode">Constructor mode to validate</param>
         private void ValidateTopicAndSubscriptionSettings(ConstructorCreateMode constructorCreateMode)
         {
             if (CurrentConstructorCreateMode != constructorCreateMode)
