@@ -8,8 +8,10 @@
     <RepositoryUrl>https://github.com/JDSRAO/Azure.Solutions</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/JDSRAO/Azure.Solutions/blob/master/LICENSE</PackageLicenseUrl>
     <PackageId>KJDS.Azure.StorageAccount</PackageId>
-    <Authors>KJDS</Authors>
+    <Authors>KJDS Srinivasa Rao</Authors>
     <Product>KJDS.Azure.StorageAccount</Product>
+    <RepositoryType>github</RepositoryType>
+    <Description>Azure storage account helpers to ease the development</Description>
   </PropertyGroup>
 
   <ItemGroup>

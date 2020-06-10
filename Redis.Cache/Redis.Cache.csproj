@@ -10,6 +10,9 @@
     <PackageLicenseUrl>https://github.com/JDSRAO/Azure.Solutions/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/JDSRAO/Azure.Solutions/tree/master/Redis.Cache</PackageProjectUrl>
     <RepositoryUrl>https://github.com/JDSRAO/Azure.Solutions</RepositoryUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryType>github</RepositoryType>
+    <Description>Azure redis cache helpers to ease the development</Description>
   </PropertyGroup>
 
   <ItemGroup>

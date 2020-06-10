@@ -12,6 +12,8 @@
     <PackageProjectUrl>https://github.com/JDSRAO/Azure.Solutions/tree/master/CosmosDB</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl>https://github.com/JDSRAO/Azure.Solutions</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <Description>Azure cosmos DB helpers to ease the development</Description>
   </PropertyGroup>
 
   <ItemGroup>
