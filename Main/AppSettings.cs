@@ -39,6 +39,7 @@ namespace Main
         public const string CosmosDB_SQLConnectionString = "https://localhost:8081";
         public const string ComsomDB_SQLKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
         public const string CosmosDB_SQLDatabaseId = "SampleDatabase";
+        public const string CosmosDB_ConnectionString = "AccountEndpoint=https://br-azwe-dvdpcdb01.documents.azure.com:443/;AccountKey=fbu4imAXfwmOwAi5iLUK4RR6Cd1Fm3IGcpZQqfJkTIZCuue555kClIa2PKiCDvy8XfhzoYaiTfwkx3CtPUWPIA==;";
 
         #endregion
     }

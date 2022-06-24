@@ -17,14 +17,23 @@ namespace Main.StorageAccount.TableProgram
 
         public TableProgram()
         {
-            table = new Table(AppSettings.StorageAccountConnectionString);
+            table = new Table(AppSettings.CosmosDB_ConnectionString);
         }
 
         public void Run()
         {
-            CreateTableAsync().GetAwaiter().GetResult();
-            InsertDataAsync().GetAwaiter().GetResult();
-            InsertElasticDataAsync().GetAwaiter().GetResult();
+            try
+            {
+                CreateTableAsync().GetAwaiter().GetResult();
+                InsertDataAsync().GetAwaiter().GetResult();
+                InsertElasticDataAsync().GetAwaiter().GetResult();
+                DeleteDataAsync().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
             Console.WriteLine("Press any key to proceed");
             Console.ReadKey();
         }
@@ -45,6 +54,17 @@ namespace Main.StorageAccount.TableProgram
             };
 
             await table.InsertAsync(customer);
+        }
+
+        private async Task DeleteDataAsync()
+        {
+            Console.WriteLine($"Deleting data from : {tableName}");
+            var customer = new CustomerEntity("Sales")
+            {
+                RowKey = "00ea9af8-03e0-44e8-8bcc-5a14174fccf9"
+            };
+
+            await table.DeleteEntityAsync(customer);
         }
 
         private async Task InsertElasticDataAsync()

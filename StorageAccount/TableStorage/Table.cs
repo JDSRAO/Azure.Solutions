@@ -156,7 +156,7 @@ namespace StorageAccount.TableStorage
                 {
                     throw new Exception($"No table with {entity.TableName} exists");
                 }
-                var retriveOperation = TableOperation.Retrieve(entity.PartitionKey, entity.RowKey);
+                var retriveOperation = TableOperation.Retrieve<T>(entity.PartitionKey, entity.RowKey);
                 var retriveResult = await table.ExecuteAsync(retriveOperation);
 
                 var entityToDelete = (T)retriveResult.Result;
